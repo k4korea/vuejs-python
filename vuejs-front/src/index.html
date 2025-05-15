@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js + Python Backend</title>
+    <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+        }
+        .logo {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 1.5rem;
+            animation: spin 20s linear infinite;
+        }
+        h1 {
+            color: #42b883;
+            margin: 0 0 1rem 0;
+            font-size: 2.5rem;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .button {
+            background-color: #42b883;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 0.5rem;
+        }
+        .button:hover {
+            background-color: #3aa876;
+        }
+        .message {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            color: #42b883;
+            white-space: pre-wrap;
+            text-align: left;
+        }
+        .error {
+            color: #dc3545;
+        }
+        .success {
+            color: #28a745;
+        }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <img src="https://vuejs.org/images/logo.png" alt="Vue.js Logo" class="logo">
+            <h1>{{ message }}</h1>
+            <p class="subtitle">Vue.js Frontend + Python Backend</p>
+            <button class="button" @click="incrementCount">
+                Clicked {{ count }} times
+            </button>
+            <button class="button" @click="fetchFromBackend">
+                Get Message from Backend
+            </button>
+            <button class="button" @click="testBackend">
+                Test Backend Connection
+            </button>
+            <div v-if="backendMessage" :class="['message', { error: isError, success: !isError }]">
+                {{ backendMessage }}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        // Configure axios defaults
+        axios.defaults.headers.common['Accept'] = 'application/json';
+        axios.defaults.headers.common['Content-Type'] = 'application/json';
+        axios.defaults.withCredentials = true;
+
+        const app = createApp({
+            data() {
+                return {
+                    message: 'Hello Vue.js!',
+                    count: 0,
+                    backendMessage: '',
+                    isError: false
+                }
+            },
+            methods: {
+                incrementCount() {
+                    this.count++;
+                },
+                async fetchFromBackend() {
+                    try {
+                        this.isError = false;
+                        this.backendMessage = 'Loading...';
+                        const response = await axios.get('http://localhost:5000/api/hello');
+                        this.backendMessage = JSON.stringify(response.data, null, 2);
+                    } catch (error) {
+                        console.error('Error fetching from backend:', error);
+                        this.isError = true;
+                        this.backendMessage = `Error connecting to backend:\n${error.message}\n\nDetails:\n${JSON.stringify(error.response?.data || {}, null, 2)}`;
+                    }
+                },
+                async testBackend() {
+                    try {
+                        this.isError = false;
+                        this.backendMessage = 'Testing connection...';
+                        const response = await axios.get('http://localhost:5000/api/test');
+                        this.backendMessage = JSON.stringify(response.data, null, 2);
+                    } catch (error) {
+                        console.error('Error testing backend:', error);
+                        this.isError = true;
+                        this.backendMessage = `Error testing backend:\n${error.message}\n\nDetails:\n${JSON.stringify(error.response?.data || {}, null, 2)}`;
+                    }
+                }
+            },
+            mounted() {
+                console.log('App mounted successfully');
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+</html> 

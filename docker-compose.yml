@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./vuejs-front
+      dockerfile: Dockerfile
+    container_name: vuejs-frontend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./vuejs-front:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./python-backend
+      dockerfile: Dockerfile
+    container_name: python-backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./python-backend:/app
+    environment:
+      - FLASK_ENV=production
+      - FLASK_APP=app.py
+    restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge 
