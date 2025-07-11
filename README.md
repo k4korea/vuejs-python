@@ -111,6 +111,8 @@ CMD ["nginx", "-g", "daemon off;"]
 ## 리눅스 2.20.0 버전
 https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-linux-x86_64
 
+cp docker-compose-linux-x86_64 ./docker-compose
+
 ## 윈도우 2.20 버전
 https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-windows-x86_64.exe
 
