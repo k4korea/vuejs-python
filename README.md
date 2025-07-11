@@ -106,6 +106,15 @@ CMD ["nginx", "-g", "daemon off;"]
 
 ## 3. 실행 방법
 
+### 3-0 설치 방법 
+
+# 리눅스 2.20.0 버전
+wget https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-linux-x86_64
+cp ./docker-compose-linux-x86_64 ./docker-compose
+
+# 윈도우 2.20 버전
+https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-windows-x86_64.exe
+
 ### 3-1. 사전 요구사항
 - Docker
 - Docker Compose
