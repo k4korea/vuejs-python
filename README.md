@@ -1,4 +1,4 @@
-#  Tech Project Documentation
+<img width="481" height="182" alt="image" src="https://github.com/user-attachments/assets/fb385e36-1609-4612-8461-fd45521cb7c4" />#  Tech Project Documentation
 
 ## 1. Python Backend
 
@@ -131,6 +131,9 @@ docker-compose logs -f backend
 # Frontend 로그만 확인
 docker-compose logs -f frontend
 ```
+
+
+
 
 ### 3-5. 서비스 중지
 ```bash
